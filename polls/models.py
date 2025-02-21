@@ -17,12 +17,13 @@ class Question(models.Model):
     def total_votes(self):
         votes = 0
         choices = self.choice_set.all()
-        # Faça um laço para somar todos os votos.
+        for choice in choices:
+            votes += choice.votes
+
         return votes
 
     def has_votes(self):
-        # Utilize uma condição para retornar se essa Questão tem ou não votos.
-        return False
+        return any(choice.votes > 0 for choice in self.choice_set.all())
 
 
 class Choice(models.Model):
